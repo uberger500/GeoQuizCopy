@@ -23,6 +23,7 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String CHEAT_INDEX = "cheatIndex";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Question[] mQuestionBank = new Question[] {
@@ -35,7 +36,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
     private boolean mIsCheater;
-    private boolean mCheated;
 
     private void updateQuestion() {
 
@@ -49,7 +49,6 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
 
-      //  mIsCheater = CheatActivity.wasAnswerShown(data);
         if (mIsCheater) {
             messageResId = R.string.judgement_toast;
         } else {
@@ -111,16 +110,19 @@ public class QuizActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(CHEAT_INDEX, false);
         }
         updateQuestion();
     }
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(KEY_INDEX, mCurrentIndex);
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBoolean(CHEAT_INDEX, mIsCheater);
     }
+
     @Override
     protected void onStart() {
         super.onStart();
